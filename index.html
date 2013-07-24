@@ -42,18 +42,20 @@
 				</section>
 				<section>
 					<h2>Why Ember?</h2>
-					<p>
-						<ul>
-							<li>Clean separation of concerns between the front end behavior and the backend logic</li>
-							<li>Powerful data binding</li>
-							<li>Doesn't want you to forget perfectly good technologies like Jquery and HTML</li>
-						</ul>
-					</p>
+					<ul>
+						<li>Clean separation of concerns between the front end interactive behavior and the backend logic</li>
+						<li>Powerful data binding</li>
+            <li>Computed Properties are <em>rad</em></li>
+					</ul>
 				</section>
 				<section>
 					<h2>Angular is clearly more popular, why waste my time?</h2>
           <ul>
-            <li>Angular is cool, but it does encourage you to write invalid HTML, and in a project of size it's easy to lose various ng attributes in the shuffle</li>
+            <li>Angular is cool, and solves a similar set of problems, but...</li>
+            <li class="fragment">Encourages Invalid HTML</li>
+            <li class="fragment">Has to scan the DOM constantly for <pre>ng-*</pre> attributes</li>
+            <li class="fragment">Easy to lose track of various ng-attributes littered throughout the DOM</li>
+            <li class="fragment">Personal Opinion - Google's killed enough things of theirs that I use to want to invest all that much time in their products</li>
           </ul>
 				</section>
         <section>
@@ -61,6 +63,7 @@
             <h2>Getting started</h2>
             <pre>
               <code data-trim class="ruby">
+# Gemfile
 gem 'ember-rails'              # for bootstrapping
 gem 'ember-auth-rails'         # if you need authentication
 gem 'active_model_serializers' # Helpful in rendering JSON
@@ -75,6 +78,43 @@ $ rails g ember:bootstrap
               </code>
             </pre>
           </section>
+          <section>
+            <h2>A Brief Tour Around the Javascripts Directory</h2>
+            <p>You'll have several new directories in app/assets/javascripts</p>
+            <ul>
+              <li>controllers</li>
+              <li>helpers</li>
+              <li>models</li>
+              <li>routes</li>
+              <li>templates</li>
+              <li>views</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Client-side MVC Nomenclature</h2>
+            <ul>
+              <li class="fragment"><strong>Model</strong> - Your <em>persitant</em> data objects. This is what gets sent back and forth with the Rails server</li>
+              <li class="fragment"><strong>Controller</strong> - <em>Decorates</em> the model with <em>application state</em></li>
+              <li class="fragment"><strong>Routes</strong> - Loads data into the controller and performs other setup actions</li>
+              <li class="fragment"><strong>Templates</strong> - Displays the current application state in a given controller to the user.</li>
+              <li class="fragment"><strong>Helpers</strong> - Shortcut methods for your tempaltes. Especially useful in integrating existing Javascript libraries</li>
+              <li class="fragment"><strong>Views</strong> - Objects responsible for translating primitive events (click) to <em>semantic events</em> (submitComment).  Used very rarely in practice</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <h2>Rails Side - Routing</h2>
+          <p>Something important to remember when building a rich front-end client is that your Rails app is now an app exposed through an API. Therefore, it's a good idea to namespace the routes like so:</p>
+          <pre>
+            <code data-trim class="ruby">
+namespace :api do
+  namespace :v1 do
+    resources :articles
+    resources :users
+  end
+end
+            </code>
+          </pre>
         </section>
 			</div>
 
