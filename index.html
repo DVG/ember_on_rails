@@ -53,7 +53,7 @@
           <ul>
             <li>Angular is cool, and solves a similar set of problems, but...</li>
             <li class="fragment">Encourages Invalid HTML</li>
-            <li class="fragment">Has to scan the DOM constantly for <pre>ng-*</pre> attributes</li>
+            <li class="fragment">Has to scan the DOM constantly for <code>ng-*</code> attributes</li>
             <li class="fragment">Easy to lose track of various ng-attributes littered throughout the DOM</li>
             <li class="fragment">Personal Opinion - Google's killed enough things of theirs that I use to want to invest all that much time in their products</li>
           </ul>
@@ -103,6 +103,36 @@ $ rails g ember:bootstrap
           </section>
         </section>
         <section>
+          <section>
+            <h2>Start with Routes</h2>
+            <p>Routes are the starting point with an Ember app. The url is the first thing you are encouraged to think about.</p>
+          </section>
+          <section>
+            <h2>Router</h2>
+            <pre>
+              <code data-trim class="coffeescript">
+# app/assets/javascripts/router.js.coffee
+App.Router.map ->
+  @route "articles", path: '/'
+              </code>
+            </pre>
+            <p>
+              The Router serves much the same function as it does in Rails. It takes a given URL and translates it to a route object. In this case we are mapping root to the articles route.
+            </p>
+          </section>
+          <section>
+            <h2>Route Object</h2>
+            <pre>
+              <code data-trim class="coffeescript">
+# app/assets/javascripts/routes/articles.js.coffee
+App.ArticlesRoute = Ember.Route.extend
+  model: -> App.Article.find() 
+  # with no argument this will send findAll()
+              </code>
+            </pre>
+          </section>
+        </section>
+        <section>
           <h2>Setting up Models</h2>
           <p>You basically have three options:</p>
           <ol>
@@ -135,33 +165,36 @@ $ wget https://raw.github.com/ebryn/ember-model/master/ember-model.js
             <h2>Define a Model</h2>
             <pre>
               <code data-trim class="coffeescript">
+# app/assets/javascripts/routes/articles_route.js.coffee
 App.Article = Ember.Model.extend
   id: Ember.attr()
   title: Ember.attr()
   body: Ember.attr()
   comments: Ember.hasMany('App.Comment', {key: 'comments', embedded: true})
-
-App.Comic.adapter = Ember.RESTAdapter.create()
-App.Comic.url = "/api/v1/comics"     # rest endpoint
-App.Comic.collectionKey = "article"  # the root JSON key for a collection
-App.Comic.rootKey = "article"        # the root JSON key for an individual item
+App.Article.adapter = Ember.RESTAdapter.create()
+App.Article.url = "/api/v1/article"     # REST endpoint
+App.Article.collectionKey = "article"   # the root JSON key for a collection
+App.Article.rootKey = "article"         # the root JSON key for an individual item
               </code>
             </pre>
           </section>
-        </section>
-        <section>
-          <h2>Rails Side - Routing</h2>
-          <p>Something important to remember when building a rich front-end client is that your Rails app is now an app exposed through an API. Therefore, it's a good idea to namespace the routes like so:</p>
-          <pre>
-            <code data-trim class="ruby">
-namespace :api do
-  namespace :v1 do
-    resources :articles
-    resources :users
+          <section>
+              <h2>Back over to Rails - Routing</h2>
+            <p>Something important to remember when building a rich front-end client is that your Rails app is now an app exposed through an API. Therefore, it's a good idea to namespace the routes like so:</p>
+            <pre>
+              <code data-trim class="ruby">
+  namespace :api do
+    namespace :v1 do
+      resources :articles
+      resources :users
+    end
   end
-end
-            </code>
-          </pre>
+              </code>
+            </pre>
+          </section>
+          <section>
+            <h2>Rails Controller - API style</h2>
+          </section>
         </section>
 			</div>
 
