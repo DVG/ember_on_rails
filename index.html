@@ -103,6 +103,53 @@ $ rails g ember:bootstrap
           </section>
         </section>
         <section>
+          <h2>Setting up Models</h2>
+          <p>You basically have three options:</p>
+          <ol>
+            <li class="fragment">Use EmberData</li>
+            <li class="fragment">Use EmberModel</li>
+            <li class="fragment">Plain 'ol Jquery $.ajax</li>
+          </ol>
+        </section>
+        <section>
+          <section>
+            <h2>I use EmberModel</h2>
+            <ul>
+              <li>Ember Data is still Alpha software.</li>
+              <li>EmberModel is a lot simplier and wants to stay simple</li>
+              <li>You can use a REST adapter to do all the basic CRUD stuff with minimal code, or you can bring your own $.Ajax for weird stuff.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>install ember-model</h2>
+            <pre>
+              <code data-trim class="bash">
+$ cd app/assets/javascripts
+$ mkdir lib && cd lib
+$ wget https://raw.github.com/ebryn/ember-model/master/ember-model.js
+              </code>
+            </pre>
+            <p>Don't forget to include it in application.js</p>
+          </section>
+          <section>
+            <h2>Define a Model</h2>
+            <pre>
+              <code data-trim class="coffeescript">
+App.Article = Ember.Model.extend
+  id: Ember.attr()
+  title: Ember.attr()
+  body: Ember.attr()
+  comments: Ember.hasMany('App.Comment', {key: 'comments', embedded: true})
+
+App.Comic.adapter = Ember.RESTAdapter.create()
+App.Comic.url = "/api/v1/comics"     # rest endpoint
+App.Comic.collectionKey = "article"  # the root JSON key for a collection
+App.Comic.rootKey = "article"        # the root JSON key for an individual item
+              </code>
+            </pre>
+          </section>
+        </section>
+        <section>
           <h2>Rails Side - Routing</h2>
           <p>Something important to remember when building a rich front-end client is that your Rails app is now an app exposed through an API. Therefore, it's a good idea to namespace the routes like so:</p>
           <pre>
@@ -121,7 +168,7 @@ end
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.min.js"></script>
+		<script src="js/reveal.js"></script>
 
 		<script>
 

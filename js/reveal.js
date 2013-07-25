@@ -74,7 +74,7 @@ var Reveal = (function(){
 			previewLinks: false,
 
 			// Theme (see /css/theme)
-			theme: null,
+			theme: 'solarized',
 
 			// Transition style
 			transition: 'page', // default/cube/page/concave/zoom/linear/fade/none
