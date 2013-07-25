@@ -61,22 +61,18 @@
         <section>
           <section>
             <h2>Getting started</h2>
-            <pre>
-              <code data-trim class="ruby">
+            <pre><code data-trim class="ruby">
 # Gemfile
 gem 'ember-rails'              # for bootstrapping
 gem 'ember-auth-rails'         # if you need authentication
 gem 'active_model_serializers' # Helpful in rendering JSON
-              </code>
-            </pre>
+              </code></pre>
           </section>
           <section>
-            <pre>
-              <code data-trim class="bash">
+            <pre><code data-trim class="bash">
 $ bundle install
 $ rails g ember:bootstrap
-              </code>
-            </pre>
+              </code></pre>
           </section>
           <section>
             <h2>A Brief Tour Around the Javascripts Directory</h2>
@@ -109,27 +105,23 @@ $ rails g ember:bootstrap
           </section>
           <section>
             <h2>Router</h2>
-            <pre>
-              <code data-trim class="coffeescript">
+            <pre><code data-trim class="coffeescript">
 # app/assets/javascripts/router.js.coffee
 App.Router.map ->
   @route "articles", path: '/'
-              </code>
-            </pre>
+              </code></pre>
             <p>
               The Router serves much the same function as it does in Rails. It takes a given URL and translates it to a route object. In this case we are mapping root to the articles route.
             </p>
           </section>
           <section>
             <h2>Route Object</h2>
-            <pre>
-              <code data-trim class="coffeescript">
+            <pre><code data-trim class="coffeescript">
 # app/assets/javascripts/routes/articles.js.coffee
 App.ArticlesRoute = Ember.Route.extend
   model: -> App.Article.find() 
   # with no argument this will send findAll()
-              </code>
-            </pre>
+            </code></pre>
           </section>
         </section>
         <section>
@@ -152,19 +144,16 @@ App.ArticlesRoute = Ember.Route.extend
           </section>
           <section>
             <h2>install ember-model</h2>
-            <pre>
-              <code data-trim class="bash">
+            <pre><code data-trim class="bash">
 $ cd app/assets/javascripts
 $ mkdir lib && cd lib
 $ wget https://raw.github.com/ebryn/ember-model/master/ember-model.js
-              </code>
-            </pre>
+              </code></pre>
             <p>Don't forget to include it in application.js</p>
           </section>
           <section>
             <h2>Define a Model</h2>
-            <pre>
-              <code data-trim class="coffeescript">
+            <pre><code data-trim class="coffeescript">
 # app/assets/javascripts/routes/articles_route.js.coffee
 App.Article = Ember.Model.extend
   id: Ember.attr()
@@ -175,22 +164,19 @@ App.Article.adapter = Ember.RESTAdapter.create()
 App.Article.url = "/api/v1/article"     # REST endpoint
 App.Article.collectionKey = "article"   # the root JSON key for a collection
 App.Article.rootKey = "article"         # the root JSON key for an individual item
-              </code>
-            </pre>
+              </code></pre>
           </section>
           <section>
               <h2>Back over to Rails - Routing</h2>
             <p>Something important to remember when building a rich front-end client is that your Rails app is now an app exposed through an API. Therefore, it's a good idea to namespace the routes like so:</p>
-            <pre>
-              <code data-trim class="ruby">
+            <pre><code data-trim class="ruby">
   namespace :api do
     namespace :v1 do
       resources :articles
       resources :users
     end
   end
-              </code>
-            </pre>
+              </code></pre>
           </section>
           <section>
             <h2>Rails Controller - API style</h2>
