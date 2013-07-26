@@ -170,16 +170,108 @@ App.Article.rootKey = "article"         # the root JSON key for an individual it
               <h2>Back over to Rails - Routing</h2>
             <p>Something important to remember when building a rich front-end client is that your Rails app is now an app exposed through an API. Therefore, it's a good idea to namespace the routes like so:</p>
             <pre><code data-trim class="ruby">
-  namespace :api do
-    namespace :v1 do
-      resources :articles
-      resources :users
-    end
+namespace :api do
+  namespace :v1 do
+    resources :articles
+    resources :users
   end
+end
               </code></pre>
           </section>
           <section>
-            <h2>Rails Controller - API style</h2>
+            <h2>Rails Controller</h2>
+            <p>Cheap and Fast Version</p>
+            <pre><code data-trim class="ruby">gem "inherited_resources"</code></pre>
+          </section>
+          <section>
+            <h2>Define a base controller</h2>
+            <pre><code data-trim class="ruby">
+class BaseController < ApplicationController
+  inherit_resources
+  respond_to :json
+  before_filter :default_json
+
+  protected
+  def default_json
+    request.format = :json if params[:format].nil?
+  end
+end
+
+            </code></pre>
+            <aside class="notes">
+              This will define the basic restful actions for you, only respond to JSON requests and will default any request wehre the format cannot be determined to json.
+            </aside>
+          </section>
+          <section>
+            <h2>A note about ember data</h2>
+            <p>If you use EmberData's REST Adapter, sometimes it sends some oddly formatted collection requests. You can get around it like this (inherited resources hack):</p>
+            <pre class="fragment"><code data-trim class="ruby">
+class BaseController < ActiveRecord::Base
+  # ... code omitted
+  def collection
+    get_collection_ivar || begin
+      c = end_of_association_chain
+      coll = c.respond_to?(:scoped) ? c.scoped : c
+      coll = params[:ids] ? coll.find(params[:ids]) : coll.all
+      set_collection_ivar(coll)
+    end
+  end
+end
+            </code></pre>
+          </section>
+          <section>
+            <h2>The Rails Model</h2>
+            <p>Nothing much special here</p>
+            <pre><code data-trim class="ruby">
+class Article < ActiveRecord::Base
+  attr_accessible :title, :body
+  has_many :comments
+end
+            </code></pre>
+          </section>
+          <section>
+            <h2>ActiveModel::Serializers</h2>
+            <p>You can use this to serialize your JSON response in a way that makes sense to you. In the most basic, you just pass it a list of attribtues:</p>
+            <pre class="fragment"><code data-trim class="ruby">
+class ArticleSerializer < ActiveModel::Serializer
+  attributes :id, :title, :body
+  has_many :comments
+end
+            </code></pre>
+          </section>
+          <section>
+            <h2>Methods-based serialization</h2>
+            <p>You can also define a method to return something more specific</p>
+            <pre class="fragment"><code data-trim class="ruby">
+class ArticleSerializer < ActiveModel::Serializer
+  attributes :id, :title, :body, :image_url
+  has_many :comments
+
+  def image_url
+    object.image(:thumb)
+  end
+endd
+            </code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>The View Layer</h2>
+            <p>We've got a route that sends a request to the rails app, and the rails app now renders JSON back to us. now we just need to display something to the user</p>
+          </section>
+          <section>
+            <h2>The Application Template</h2>
+            <p>This basically works like the application layout in Rails, though since the Ember app is rendering inside the application layout, you don't need to worry about boilerplate html</p>
+            <pre class="fragment"><code data-trim class="handlebars">
+<h1>My Awesome App</h1>
+{{outlet}}
+            </code></pre>
+            <aside class="notes">
+              outlet works like yield. It's the place ember will render a given template.
+            </aside>
+          </section>
+          <section>
+            <h2>The Articles Template</h2>
           </section>
         </section>
 			</div>
